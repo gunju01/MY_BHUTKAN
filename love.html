@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story — Rom-Com Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Patrick+Hand&family=Kalam:wght@400;700&family=Bowlby+One&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2EDE0;
+    --paper-shadow: #E4DCC8;
+    --ink: #14110D;
+    --ink-soft: #2A2520;
+    --tone: #9B9387;
+    --red: #C8362E;
+    --pink: #E8A5B0;
+    --pink-light: #F5C9D0;
+    --blue: #A8C8E0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* LOCK SCREEN */
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #14110D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image:
+      radial-gradient(circle at 23% 14%, rgba(245,230,211,0.5) 1px, transparent 1px),
+      radial-gradient(circle at 67% 38%, rgba(245,230,211,0.3) 1px, transparent 1px),
+      radial-gradient(circle at 89% 72%, rgba(245,230,211,0.4) 1px, transparent 1px),
+      radial-gradient(circle at 12% 88%, rgba(245,230,211,0.35) 1px, transparent 1px),
+      radial-gradient(circle at 45% 56%, rgba(245,230,211,0.25) 1px, transparent 1px),
+      radial-gradient(circle at 78% 22%, rgba(245,230,211,0.3) 1px, transparent 1px);
+    background-size: 100% 100%;
+  }
+  .lock-screen.unlocked {
+    animation: lockFade 0.8s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes lockFade {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+  }
+  .lock-box {
+    text-align: center;
+    padding: 2rem;
+    max-width: 380px;
+    width: 90%;
+  }
+  .lock-emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: lockPulse 2s ease-in-out infinite;
+  }
+  @keyframes lockPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  .lock-title {
+    font-family: 'Bowlby One', sans-serif;
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    color: #F2EDE0;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    text-shadow: 3px 3px 0 #C8362E;
+  }
+  .lock-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #E8A5B0;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+  }
+  .lock-hint {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.95rem;
+    color: #9B9387;
+    margin-bottom: 1rem;
+  }
+  .lock-input-wrap {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  .lock-input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    text-align: center;
+    border: 3px solid #F2EDE0;
+    background: transparent;
+    color: #F2EDE0;
+    outline: none;
+    letter-spacing: 0.1em;
+  }
+  .lock-input::placeholder {
+    color: #9B9387;
+    font-size: 1.1rem;
+  }
+  .lock-input:focus {
+    border-color: #E8A5B0;
+    box-shadow: 0 0 20px rgba(232,165,176,0.3);
+  }
+  .lock-btn {
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+    background: #F2EDE0;
+    color: #14110D;
+    border: none;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 #C8362E;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: 0.5rem;
+  }
+  .lock-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #C8362E;
+  }
+  .lock-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #C8362E;
+  }
+  .lock-error {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1rem;
+    color: #C8362E;
+    margin-top: 0.75rem;
+    min-height: 1.5rem;
+    transition: opacity 0.3s;
+  }
+  .lock-error.visible { animation: lockShake 0.4s ease; }
+  @keyframes lockShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+  .lock-footer {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #9B9387;
+    margin-top: 2rem;
+    opacity: 0.6;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Patrick Hand', cursive;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 13% 27%, rgba(20,17,13,0.025) 0.5px, transparent 1px),
+      radial-gradient(circle at 47% 73%, rgba(20,17,13,0.03) 0.5px, transparent 1px),
+      radial-gradient(circle at 81% 41%, rgba(20,17,13,0.02) 0.5px, transparent 1px);
+    background-size: 7px 7px, 11px 11px, 5px 5px;
+  }
+
+  .book { max-width: 800px; margin: 0 auto; padding: 2rem 1.25rem 7rem; }
+
+  .page { display: none; animation: fadeIn 0.5s ease-out; }
+  .page.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* COVER */
+  .cover { text-align: center; padding: 2rem 0; }
+  .cover-frame {
+    border: 4px solid var(--ink);
+    padding: 3rem 1.5rem;
+    background: var(--paper);
+    box-shadow: 8px 8px 0 var(--pink);
+    position: relative;
+  }
+  .cover-tag {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+  .cover-volume {
+    font-family: 'Bangers', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    opacity: 0.7;
+  }
+  .cover-title {
+    font-family: 'Bowlby One', sans-serif;
+    font-size: clamp(3.5rem, 12vw, 6.5rem);
+    color: var(--ink);
+    line-height: 0.9;
+    margin-bottom: 0.5rem;
+    text-shadow: 4px 4px 0 var(--pink), 8px 8px 0 var(--red);
+    transform: rotate(-2deg);
+  }
+  .cover-japanese {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    margin: 0.5rem 0 1rem;
+  }
+  .cover-warning {
+    font-family: 'Bangers', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    border: 2px dashed var(--ink-soft);
+    padding: 0.5rem 1rem;
+    display: inline-block;
+  }
+  .cover-art { margin: 1rem auto 1.5rem; max-width: 320px; }
+  .cover-dedication {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin: 1.5rem auto;
+    max-width: 30ch;
+  }
+  .cover-dedication strong { color: var(--red); }
+  .begin-btn {
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--pink);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .begin-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--pink); }
+  .begin-btn:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--pink); }
+
+  /* CHAPTER HEADERS */
+  .chapter-header { text-align: center; margin-bottom: 1.5rem; }
+  .chapter-num {
+    font-family: 'Bangers', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    color: var(--red);
+  }
+  .chapter-title {
+    font-family: 'Bowlby One', sans-serif;
+    font-size: clamp(1.75rem, 5vw, 2.75rem);
+    line-height: 1.1;
+    margin: 0.25rem 0;
+    text-transform: uppercase;
+  }
+  .chapter-date {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  /* PANELS */
+  .panels { display: grid; gap: 10px; margin-bottom: 2rem; }
+  .panel {
+    border: 3px solid var(--ink);
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .panel-wide { grid-column: 1 / -1; }
+  .panel-pink { background: var(--pink-light); }
+  .panel svg { width: 100%; height: 100%; display: block; }
+  .layout-2col { grid-template-columns: 1fr 1fr; }
+  .layout-3col { grid-template-columns: 1fr 1fr 1fr; }
+  .layout-4col { grid-template-columns: repeat(4, 1fr); }
+  .layout-asymmetric { grid-template-columns: 2fr 1fr; }
+  .layout-stack { grid-template-columns: 1fr; }
+
+  /* BUBBLES */
+  .bubble {
+    position: absolute;
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    border-radius: 50%;
+    padding: 0.7rem 1rem;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    max-width: 70%;
+    text-align: center;
+    z-index: 2;
+  }
+  .bubble-rect { border-radius: 18px; }
+  .bubble-yell {
+    border-width: 3px;
+    background: var(--paper);
+    border-style: solid;
+    clip-path: polygon(10% 0%, 25% 8%, 40% 0%, 55% 10%, 70% 0%, 85% 8%, 100% 0%, 95% 25%, 100% 40%, 95% 60%, 100% 80%, 92% 100%, 75% 92%, 60% 100%, 45% 90%, 30% 100%, 15% 90%, 0% 100%, 8% 75%, 0% 50%, 5% 25%, 0% 0%);
+    padding: 1rem 1.2rem;
+  }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+  }
+  .bubble-tl::after { top: 100%; left: 20%; border-top-color: var(--ink); }
+  .bubble-tr::after { top: 100%; right: 20%; border-top-color: var(--ink); }
+  .bubble-bl::after { bottom: 100%; left: 20%; border-bottom-color: var(--ink); }
+
+  .thought {
+    position: absolute;
+    background: var(--paper);
+    border: 2.5px dashed var(--ink-soft);
+    border-radius: 50%;
+    padding: 0.6rem 1rem;
+    font-family: 'Caveat', cursive;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    max-width: 75%;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .caption {
+    position: absolute;
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    padding: 0.5rem 0.85rem;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    max-width: 80%;
+    z-index: 2;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .caption-top { top: 10px; left: 10px; }
+  .caption-bottom { bottom: 10px; left: 10px; }
+  .caption-right { top: 10px; right: 10px; }
+
+  /* SFX */
+  .sfx {
+    position: absolute;
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    z-index: 3;
+    text-shadow: -1px -1px 0 var(--paper), 1px -1px 0 var(--paper), -1px 1px 0 var(--paper), 1px 1px 0 var(--paper), 3px 3px 0 var(--red);
+    transform: rotate(-8deg);
+  }
+  .sfx-red { color: var(--red); text-shadow: -1px -1px 0 var(--paper), 1px -1px 0 var(--paper), -1px 1px 0 var(--paper), 1px 1px 0 var(--paper), 3px 3px 0 var(--ink); }
+  .sfx-pink { color: var(--pink); text-shadow: -1px -1px 0 var(--paper), 1px -1px 0 var(--paper), -1px 1px 0 var(--paper), 1px 1px 0 var(--paper), 3px 3px 0 var(--red); }
+  .sfx-big { font-size: 3rem; }
+  .sfx-small { font-size: 1.2rem; }
+  .sfx-tiny { font-size: 0.9rem; }
+
+  /* MONOLOGUE */
+  .monologue {
+    border: 3px solid var(--ink);
+    background: var(--paper);
+    padding: 1rem 1.25rem;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin: 1.5rem 0;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .monologue p { margin-bottom: 0.5rem; }
+  .monologue p:last-child { margin-bottom: 0; }
+  .monologue .emphasis {
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+    color: var(--red);
+    font-size: 1.3rem;
+  }
+  .monologue .joke {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* FINAL */
+  .final { text-align: center; padding: 2rem 0; }
+  .final-frame {
+    border: 4px solid var(--ink);
+    padding: 3rem 1.5rem;
+    background: var(--paper);
+    box-shadow: 8px 8px 0 var(--red);
+  }
+  .final-title {
+    font-family: 'Bowlby One', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    text-shadow: 3px 3px 0 var(--red);
+  }
+  .final-text {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    margin: 1.5rem auto;
+    max-width: 28ch;
+  }
+  .signature {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--red);
+    margin-top: 2rem;
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--ink); padding: 1rem; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 -3px 0 var(--pink);
+  }
+  .nav-btn {
+    background: var(--paper); border: 3px solid var(--paper); color: var(--ink);
+    font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 0.1em;
+    padding: 0.5rem 1.2rem; cursor: pointer;
+    box-shadow: 3px 3px 0 var(--pink);
+  }
+  .nav-btn:hover:not(:disabled) { transform: translate(-1px, -1px); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
+  .progress { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .progress-dot {
+    width: 8px; height: 8px; background: var(--paper);
+    opacity: 0.3; cursor: pointer; transition: all 0.2s;
+  }
+  .progress-dot.active { background: var(--pink); opacity: 1; transform: scale(1.5); }
+  .progress-dot.visited { opacity: 0.7; }
+  .nav.hidden { transform: translateY(100%); }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .book { padding: 1rem 0.75rem 6.5rem; }
+    .panels { gap: 6px; }
+    .panel { min-height: 130px; box-shadow: 2px 2px 0 var(--ink); }
+    .layout-3col, .layout-4col { grid-template-columns: 1fr 1fr; }
+    .bubble, .thought, .caption { font-size: 0.78rem; padding: 0.45rem 0.65rem; }
+    .sfx { font-size: 1.5rem; }
+    .sfx-big { font-size: 2.2rem; }
+    .sfx-small { font-size: 1rem; }
+    .sfx-tiny { font-size: 0.8rem; }
+    .cover-frame { padding: 2rem 1rem; }
+    .progress-dot { width: 6px; height: 6px; }
+  }
+
+  /* Special: 4-koma vertical strip */
+  .koma-strip {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .koma-panel {
+    border: 3px solid var(--ink);
+    background: var(--paper);
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .koma-num {
+    position: absolute;
+    top: 5px; left: 8px;
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    color: var(--red);
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-emoji">🔒</div>
+    <div class="lock-title">THIS IS<br>FOR YOU</div>
+    <div class="lock-subtitle">someone made you something special.<br>but first — prove it's you.</div>
+    <div class="lock-hint">type the secret word to unlock ♡</div>
+    <div class="lock-input-wrap">
+      <input type="text" class="lock-input" id="lockInput" placeholder="the word only you know..." autocomplete="off" autofocus>
+    </div>
+    <button class="lock-btn" id="lockBtn" onclick="tryUnlock()">UNLOCK ♡</button>
+    <div class="lock-error" id="lockError">&nbsp;</div>
+    <div class="lock-footer">~ a gift, just for you ~</div>
+  </div>
+</div>
+
+<div class="book">
+
+  <!-- ========== COVER ========== -->
+  <section class="page cover active" data-page="0">
+    <div class="cover-frame">
+      <div class="cover-tag">★ ROMANTIC COMEDY ★</div>
+      <div class="cover-volume">VOL. 1 — ROM-COM EDITION</div>
+
+      <h1 class="cover-title">Our<br>Story</h1>
+      <div class="cover-japanese">— now with 70% more chaos —</div>
+
+      <div class="cover-warning">⚠ MAY CAUSE FEELINGS ⚠</div>
+
+      <div class="cover-art">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots-c" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+              <circle cx="2.5" cy="2.5" r="0.6" fill="#14110D" opacity="0.4"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="300" height="200" fill="url(#dots-c)" opacity="0.25"/>
+
+          <!-- Chibi girl (left) - exaggerated cute style -->
+          <g>
+            <!-- Body (round) -->
+            <ellipse cx="100" cy="155" rx="22" ry="20" fill="#14110D"/>
+            <!-- Big head -->
+            <ellipse cx="100" cy="100" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <!-- Hair -->
+            <path d="M65 90 Q60 60 75 65 Q80 50 100 55 Q120 50 125 65 Q140 60 135 90 Q130 78 100 75 Q70 78 65 90 Z" fill="#14110D"/>
+            <!-- Eyes (big sparkly) -->
+            <ellipse cx="86" cy="105" rx="6" ry="8" fill="#14110D"/>
+            <ellipse cx="114" cy="105" rx="6" ry="8" fill="#14110D"/>
+            <circle cx="87" cy="102" r="2" fill="#F2EDE0"/>
+            <circle cx="115" cy="102" r="2" fill="#F2EDE0"/>
+            <!-- Blush -->
+            <ellipse cx="78" cy="115" rx="5" ry="3" fill="#E8A5B0"/>
+            <ellipse cx="122" cy="115" rx="5" ry="3" fill="#E8A5B0"/>
+            <!-- Smile -->
+            <path d="M93 122 Q100 128 107 122" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Hearts in air -->
+            <path d="M65 70 Q62 65 65 62 Q68 64 65 70 Z" fill="#C8362E"/>
+          </g>
+
+          <!-- Chibi boy (right) -->
+          <g>
+            <ellipse cx="200" cy="155" rx="22" ry="20" fill="#14110D"/>
+            <ellipse cx="200" cy="100" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <!-- Short hair -->
+            <path d="M170 80 Q175 60 200 60 Q225 60 230 80 Q220 75 200 76 Q180 75 170 80 Z" fill="#14110D"/>
+            <!-- Eyes -->
+            <ellipse cx="186" cy="105" rx="5" ry="7" fill="#14110D"/>
+            <ellipse cx="214" cy="105" rx="5" ry="7" fill="#14110D"/>
+            <circle cx="187" cy="102" r="1.5" fill="#F2EDE0"/>
+            <circle cx="215" cy="102" r="1.5" fill="#F2EDE0"/>
+            <!-- Blush -->
+            <ellipse cx="178" cy="115" rx="4" ry="3" fill="#E8A5B0"/>
+            <ellipse cx="222" cy="115" rx="4" ry="3" fill="#E8A5B0"/>
+            <!-- Slight smile -->
+            <path d="M193 122 Q200 125 207 122" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Sweat drop (he's flustered too) -->
+            <ellipse cx="230" cy="95" rx="3" ry="6" fill="#A8C8E0"/>
+          </g>
+
+          <!-- Big heart between them -->
+          <path d="M150 60 Q138 45 150 35 Q162 30 165 50 Q168 30 180 35 Q192 45 180 60 Q165 80 150 60 Z"
+                fill="#C8362E" stroke="#14110D" stroke-width="2.5"/>
+
+          <!-- Sparkles -->
+          <g stroke="#14110D" stroke-width="2" fill="none">
+            <path d="M40 30 L40 42 M34 36 L46 36"/>
+            <path d="M260 25 L260 37 M254 31 L266 31"/>
+            <path d="M30 130 L30 140 M25 135 L35 135"/>
+            <path d="M270 140 L270 150 M265 145 L275 145"/>
+          </g>
+
+          <!-- Floating SFX -->
+          <text x="150" y="195" text-anchor="middle" font-family="Bangers" font-size="14" fill="#C8362E" letter-spacing="2">★ DOKI DOKI ★</text>
+        </svg>
+      </div>
+
+      <div class="cover-dedication">
+        for you —<br>
+        <strong>even when you're annoying,</strong><br>
+        even when I am.
+      </div>
+
+      <button class="begin-btn" onclick="goToPage(1)">START READING ▶</button>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 1 ========== -->
+  <section class="page" data-page="1">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER ONE</div>
+      <h2 class="chapter-title">The Seat Next to Mine</h2>
+    </div>
+
+    <div class="panels layout-2col">
+      <!-- Panel 1: Wide - hall -->
+      <div class="panel panel-wide" style="min-height: 160px;">
+        <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots-1" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="0.5" fill="#14110D"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="120" width="400" height="40" fill="url(#dots-1)" opacity="0.3"/>
+          <g stroke="#14110D" stroke-width="1.5" fill="none">
+            <rect x="40" y="80" width="20" height="25"/>
+            <rect x="70" y="80" width="20" height="25"/>
+            <rect x="100" y="80" width="20" height="25"/>
+            <rect x="130" y="80" width="20" height="25"/>
+            <rect x="220" y="80" width="20" height="25"/>
+            <rect x="250" y="80" width="20" height="25"/>
+            <rect x="280" y="80" width="20" height="25"/>
+            <rect x="310" y="80" width="20" height="25"/>
+            <rect x="340" y="80" width="20" height="25"/>
+            <!-- Smaller row -->
+            <rect x="60" y="55" width="14" height="18"/>
+            <rect x="84" y="55" width="14" height="18"/>
+            <rect x="108" y="55" width="14" height="18"/>
+            <rect x="225" y="55" width="14" height="18"/>
+            <rect x="249" y="55" width="14" height="18"/>
+            <rect x="273" y="55" width="14" height="18"/>
+            <rect x="297" y="55" width="14" height="18"/>
+          </g>
+        </svg>
+        <div class="caption caption-top">A whole hall of empty seats. Plenty of options.</div>
+      </div>
+
+      <!-- Panel 2: Her alone, focused -->
+      <div class="panel">
+        <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Chibi her sitting -->
+          <g>
+            <ellipse cx="100" cy="130" rx="35" ry="25" fill="#14110D"/>
+            <ellipse cx="100" cy="80" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M68 70 Q63 45 78 50 Q83 35 100 38 Q117 35 122 50 Q137 45 132 70 Q127 60 100 58 Q73 60 68 70 Z" fill="#14110D"/>
+            <!-- Focused eyes (small dots, she's reading) -->
+            <ellipse cx="88" cy="83" rx="3" ry="2" fill="#14110D"/>
+            <ellipse cx="112" cy="83" rx="3" ry="2" fill="#14110D"/>
+            <!-- Small mouth -->
+            <line x1="98" y1="98" x2="102" y2="98" stroke="#14110D" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div class="thought" style="top: 8px; right: 8px; font-size: 0.85rem;">
+          just focus...<br>just take notes...
+        </div>
+      </div>
+
+      <!-- Panel 3: HIM sits down — PANIC -->
+      <div class="panel">
+        <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="spotlight-1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#F2EDE0"/>
+              <stop offset="100%" stop-color="#F2EDE0" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- Action lines (manga shock) -->
+          <g stroke="#14110D" stroke-width="2" opacity="0.5">
+            <line x1="100" y1="80" x2="10" y2="20"/>
+            <line x1="100" y1="80" x2="100" y2="10"/>
+            <line x1="100" y1="80" x2="190" y2="20"/>
+            <line x1="100" y1="80" x2="190" y2="150"/>
+            <line x1="100" y1="80" x2="10" y2="150"/>
+          </g>
+          <ellipse cx="100" cy="80" rx="60" ry="50" fill="url(#spotlight-1)"/>
+          <!-- Chibi her - SHOOK -->
+          <g>
+            <ellipse cx="100" cy="120" rx="30" ry="20" fill="#14110D"/>
+            <ellipse cx="100" cy="80" rx="32" ry="32" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M70 70 Q66 45 80 50 Q85 35 100 38 Q115 35 120 50 Q134 45 130 70" fill="#14110D"/>
+            <!-- HUGE shocked eyes -->
+            <ellipse cx="88" cy="82" rx="7" ry="9" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <ellipse cx="112" cy="82" rx="7" ry="9" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <circle cx="88" cy="82" r="2.5" fill="#14110D"/>
+            <circle cx="112" cy="82" r="2.5" fill="#14110D"/>
+            <!-- Tiny "o" mouth -->
+            <ellipse cx="100" cy="100" rx="2.5" ry="3.5" fill="#14110D"/>
+            <!-- Sweat drop -->
+            <ellipse cx="135" cy="65" rx="4" ry="8" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+          </g>
+        </svg>
+        <div class="sfx sfx-small" style="top: 8px; right: 8px;">!!</div>
+        <div class="thought" style="bottom: 10px; left: 10px; font-size: 0.85rem;">
+          why HERE??<br>(of all places)
+        </div>
+      </div>
+
+      <!-- Panel 4: side-eye glance -->
+      <div class="panel panel-wide" style="min-height: 130px; background: var(--pink-light);">
+        <svg viewBox="0 0 400 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Two chibi heads side by side, she's side-eyeing -->
+          <g>
+            <!-- Her -->
+            <ellipse cx="150" cy="70" rx="40" ry="40" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M115 55 Q110 30 130 35 Q135 20 150 25 Q165 20 170 35 Q190 30 185 55" fill="#14110D"/>
+            <!-- Side-eye eyes -->
+            <ellipse cx="138" cy="72" rx="6" ry="7" fill="#14110D"/>
+            <ellipse cx="162" cy="72" rx="6" ry="7" fill="#14110D"/>
+            <circle cx="142" cy="70" r="2" fill="#F2EDE0"/>
+            <circle cx="166" cy="70" r="2" fill="#F2EDE0"/>
+            <!-- Suspicious mouth -->
+            <path d="M140 88 Q150 86 160 88" stroke="#14110D" stroke-width="2" fill="none"/>
+            <!-- Blush -->
+            <ellipse cx="125" cy="82" rx="4" ry="2.5" fill="#E8A5B0"/>
+            <ellipse cx="175" cy="82" rx="4" ry="2.5" fill="#E8A5B0"/>
+
+            <!-- Him -->
+            <ellipse cx="250" cy="70" rx="40" ry="40" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M220 50 Q225 30 250 28 Q275 30 280 50 Q270 47 250 47 Q230 47 220 50 Z" fill="#14110D"/>
+            <!-- Casual eyes (he hasn't noticed) -->
+            <ellipse cx="238" cy="72" rx="5" ry="6" fill="#14110D"/>
+            <ellipse cx="262" cy="72" rx="5" ry="6" fill="#14110D"/>
+            <circle cx="240" cy="70" r="1.5" fill="#F2EDE0"/>
+            <circle cx="264" cy="70" r="1.5" fill="#F2EDE0"/>
+            <line x1="245" y1="90" x2="255" y2="90" stroke="#14110D" stroke-width="2" stroke-linecap="round"/>
+          </g>
+          <!-- Question marks above her -->
+          <text x="100" y="40" font-family="Bangers" font-size="22" fill="#C8362E">?</text>
+          <text x="80" y="30" font-family="Bangers" font-size="16" fill="#C8362E">?</text>
+        </svg>
+        <div class="thought" style="top: 10px; left: 10px; font-size: 0.85rem;">
+          wait...<br>is he... CUTE?
+        </div>
+        <div class="sfx" style="bottom: 10px; right: 15px;">DOKI</div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>There were a hundred empty seats in that conference hall...</p>
+      <p class="emphasis">and you sat in the one next to mine.</p>
+      <p>We talked about code that day. Nothing romantic.</p>
+      <p class="joke">(Internally? I was screaming. Externally? Cool. Calm. Probably normal.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 2 ========== -->
+  <section class="page" data-page="2">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER TWO</div>
+      <h2 class="chapter-title">Through a Friend</h2>
+      <div class="chapter-date">~ blame the professor ~</div>
+    </div>
+
+    <div class="panels layout-stack">
+      <div class="panel panel-wide" style="min-height: 180px;">
+        <svg viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="tone-2" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="0.5" fill="#14110D"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="400" height="180" fill="url(#tone-2)" opacity="0.15"/>
+          <!-- Three chibi figures -->
+          <g>
+            <!-- Her (panicking) -->
+            <ellipse cx="80" cy="140" rx="22" ry="18" fill="#14110D"/>
+            <ellipse cx="80" cy="95" rx="30" ry="30" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M55 85 Q50 60 65 65 Q70 50 80 53 Q90 50 95 65 Q110 60 105 85" fill="#14110D"/>
+            <!-- Wide eyes -->
+            <ellipse cx="70" cy="95" rx="5" ry="7" fill="#F2EDE0" stroke="#14110D" stroke-width="1.5"/>
+            <ellipse cx="90" cy="95" rx="5" ry="7" fill="#F2EDE0" stroke="#14110D" stroke-width="1.5"/>
+            <circle cx="70" cy="95" r="2" fill="#14110D"/>
+            <circle cx="90" cy="95" r="2" fill="#14110D"/>
+            <ellipse cx="80" cy="113" rx="2" ry="3" fill="#14110D"/>
+            <!-- Sweat -->
+            <ellipse cx="105" cy="80" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+
+            <!-- Professor (oblivious + happy) -->
+            <ellipse cx="200" cy="155" rx="28" ry="20" fill="#14110D"/>
+            <ellipse cx="200" cy="95" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <!-- Glasses -->
+            <g stroke="#14110D" stroke-width="2" fill="#F2EDE0">
+              <circle cx="190" cy="92" r="7"/>
+              <circle cx="210" cy="92" r="7"/>
+              <line x1="197" y1="92" x2="203" y2="92"/>
+            </g>
+            <!-- Eyes (squinted = happy) -->
+            <path d="M186 91 Q190 87 194 91" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M206 91 Q210 87 214 91" stroke="#14110D" stroke-width="2" fill="none"/>
+            <!-- Big smile -->
+            <path d="M188 112 Q200 122 212 112" stroke="#14110D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Beard -->
+            <path d="M178 110 Q200 125 222 110 Q220 120 200 125 Q180 120 178 110 Z" fill="#14110D"/>
+
+            <!-- Him (frozen) -->
+            <ellipse cx="320" cy="140" rx="22" ry="18" fill="#14110D"/>
+            <ellipse cx="320" cy="95" rx="30" ry="30" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M295 75 Q300 55 320 53 Q340 55 345 75 Q335 73 320 73 Q305 73 295 75 Z" fill="#14110D"/>
+            <!-- Eyes (wide, frozen) -->
+            <ellipse cx="310" cy="95" rx="5" ry="7" fill="#F2EDE0" stroke="#14110D" stroke-width="1.5"/>
+            <ellipse cx="330" cy="95" rx="5" ry="7" fill="#F2EDE0" stroke="#14110D" stroke-width="1.5"/>
+            <circle cx="310" cy="95" r="2" fill="#14110D"/>
+            <circle cx="330" cy="95" r="2" fill="#14110D"/>
+            <!-- Straight line mouth -->
+            <line x1="313" y1="112" x2="327" y2="112" stroke="#14110D" stroke-width="2"/>
+            <!-- Sweat -->
+            <ellipse cx="295" cy="80" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+          </g>
+          <!-- Hearts floating from professor (he's loving this matchmaking) -->
+          <path d="M195 35 Q190 28 195 25 Q200 27 200 35 Z" fill="#C8362E"/>
+          <path d="M210 25 Q205 18 210 15 Q215 17 215 25 Z" fill="#C8362E"/>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 10px; left: 50%; transform: translateX(-50%); background: var(--pink-light);">
+          You two should know each other! ♡
+        </div>
+      </div>
+
+      <!-- 3-col reactions -->
+      <div class="panels layout-3col" style="grid-column: 1 / -1; margin: 0;">
+        <!-- Her face: INTERNAL SCREAMING -->
+        <div class="panel">
+          <svg viewBox="0 0 150 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- Vertical lines of dread -->
+            <g stroke="#14110D" stroke-width="1.5" opacity="0.5">
+              <line x1="20" y1="20" x2="20" y2="140"/>
+              <line x1="35" y1="20" x2="35" y2="140"/>
+              <line x1="115" y1="20" x2="115" y2="140"/>
+              <line x1="130" y1="20" x2="130" y2="140"/>
+            </g>
+            <ellipse cx="75" cy="80" rx="40" ry="45" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M40 70 Q35 40 55 45 Q60 30 75 33 Q90 30 95 45 Q115 40 110 70" fill="#14110D"/>
+            <!-- Tiny dot eyes (overwhelmed) -->
+            <circle cx="63" cy="85" r="2" fill="#14110D"/>
+            <circle cx="87" cy="85" r="2" fill="#14110D"/>
+            <!-- Squiggly mouth -->
+            <path d="M65 105 Q70 100 75 105 Q80 100 85 105" stroke="#14110D" stroke-width="2" fill="none"/>
+          </svg>
+          <div class="thought" style="top: 5px; right: 5px; font-size: 0.8rem;">
+            no no no no
+          </div>
+          <div class="sfx-tiny sfx" style="bottom: 5px; left: 5px;">internal screaming</div>
+        </div>
+
+        <!-- Black panel - the moment freezes -->
+        <div class="panel" style="background: var(--ink);">
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+            <div style="font-family: 'Bowlby One', sans-serif; font-size: 1.3rem; color: var(--paper); text-align: center; line-height: 1.1;">
+              And just<br>like<br>that...
+            </div>
+          </div>
+        </div>
+
+        <!-- His face: also frozen -->
+        <div class="panel">
+          <svg viewBox="0 0 150 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="75" cy="80" rx="40" ry="45" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M40 60 Q45 35 75 33 Q105 35 110 60 Q95 58 75 58 Q55 58 40 60 Z" fill="#14110D"/>
+            <circle cx="63" cy="85" r="2" fill="#14110D"/>
+            <circle cx="87" cy="85" r="2" fill="#14110D"/>
+            <line x1="68" y1="105" x2="82" y2="105" stroke="#14110D" stroke-width="2" stroke-linecap="round"/>
+            <!-- Sweat -->
+            <ellipse cx="110" cy="65" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+          </svg>
+          <div class="thought" style="top: 5px; left: 5px; font-size: 0.8rem;">
+            why is this<br>happening
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>A professor introduced us. He had no idea what he just did.</p>
+      <p class="emphasis">And just like that — we did know each other.</p>
+      <p class="joke">(He probably still thinks he just "helped two students network." Sir. SIR.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 3 ========== -->
+  <section class="page" data-page="3">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER THREE</div>
+      <h2 class="chapter-title">The Talking Phase</h2>
+      <div class="chapter-date">~ aka: drafting hell ~</div>
+    </div>
+
+    <!-- 4-panel comedic texting montage -->
+    <div class="panels layout-2col">
+      <!-- Drafting -->
+      <div class="panel">
+        <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="20" width="100" height="160" rx="10" fill="#F2EDE0" stroke="#14110D" stroke-width="3"/>
+          <rect x="60" y="50" width="80" height="25" rx="5" fill="#E8A5B0"/>
+          <text x="100" y="68" font-family="Patrick Hand" font-size="11" text-anchor="middle">heyy how was ur day</text>
+          <line x1="60" y1="100" x2="62" y2="110" stroke="#C8362E" stroke-width="2"/>
+        </svg>
+        <div class="sfx sfx-small" style="top: 10px; right: 10px;">type type</div>
+      </div>
+
+      <!-- Delete -->
+      <div class="panel">
+        <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="20" width="100" height="160" rx="10" fill="#F2EDE0" stroke="#14110D" stroke-width="3"/>
+          <!-- empty input -->
+          <line x1="60" y1="60" x2="62" y2="72" stroke="#C8362E" stroke-width="2"/>
+          <!-- Floating ghost text being deleted -->
+          <g fill="#14110D" opacity="0.3">
+            <text x="100" y="100" font-family="Patrick Hand" font-size="10" text-anchor="middle">heyy how was ur d—</text>
+          </g>
+          <!-- X mark -->
+          <g stroke="#C8362E" stroke-width="3" fill="none">
+            <line x1="135" y1="55" x2="145" y2="65"/>
+            <line x1="145" y1="55" x2="135" y2="65"/>
+          </g>
+        </svg>
+        <div class="thought" style="top: 10px; left: 10px;">too eager??</div>
+        <div class="sfx-tiny sfx" style="bottom: 10px; right: 10px;">delete delete</div>
+      </div>
+
+      <!-- Rewrite -->
+      <div class="panel">
+        <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <rect x="50" y="20" width="100" height="160" rx="10" fill="#F2EDE0" stroke="#14110D" stroke-width="3"/>
+          <rect x="60" y="50" width="80" height="20" rx="5" fill="#E8A5B0"/>
+          <text x="100" y="64" font-family="Patrick Hand" font-size="10" text-anchor="middle">hey :)</text>
+          <!-- Emoji choices floating -->
+          <g font-family="Patrick Hand" font-size="14">
+            <text x="65" y="100">🙂?</text>
+            <text x="100" y="100">😊?</text>
+            <text x="135" y="100">😄?</text>
+            <text x="65" y="120">😅?</text>
+            <text x="100" y="120">🥰??</text>
+            <text x="135" y="120">!!</text>
+          </g>
+        </svg>
+        <div class="thought" style="bottom: 10px; left: 10px; font-size: 0.85rem;">
+          which emoji says<br>"casually interested"
+        </div>
+      </div>
+
+      <!-- SEND -->
+      <div class="panel" style="background: var(--pink-light);">
+        <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Action lines of triumph -->
+          <g stroke="#14110D" stroke-width="2" opacity="0.4">
+            <line x1="100" y1="100" x2="10" y2="20"/>
+            <line x1="100" y1="100" x2="100" y2="10"/>
+            <line x1="100" y1="100" x2="190" y2="20"/>
+            <line x1="100" y1="100" x2="10" y2="180"/>
+            <line x1="100" y1="100" x2="190" y2="180"/>
+          </g>
+          <rect x="50" y="40" width="100" height="120" rx="10" fill="#F2EDE0" stroke="#14110D" stroke-width="3"/>
+          <rect x="60" y="60" width="80" height="20" rx="5" fill="#E8A5B0"/>
+          <text x="100" y="74" font-family="Patrick Hand" font-size="10" text-anchor="middle">hey :) ✓ delivered</text>
+          <!-- Checkmark sent indicator -->
+          <text x="100" y="120" font-family="Bangers" font-size="20" text-anchor="middle" fill="#C8362E">SENT.</text>
+        </svg>
+        <div class="sfx sfx-big" style="top: 10px; right: 10px;">SEND!</div>
+        <div class="thought" style="bottom: 10px; left: 10px;">no take-backsies</div>
+      </div>
+
+      <!-- Wide panel: hours of conversation -->
+      <div class="panel panel-wide" style="min-height: 150px; background: #14110D;">
+        <svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Many chat bubbles overlapping -->
+          <g>
+            <rect x="20" y="20" width="80" height="22" rx="11" fill="#E8A5B0"/>
+            <rect x="280" y="35" width="90" height="22" rx="11" fill="#F2EDE0"/>
+            <rect x="30" y="55" width="100" height="22" rx="11" fill="#E8A5B0"/>
+            <rect x="250" y="75" width="120" height="22" rx="11" fill="#F2EDE0"/>
+            <rect x="40" y="95" width="70" height="22" rx="11" fill="#E8A5B0"/>
+            <rect x="290" y="115" width="80" height="22" rx="11" fill="#F2EDE0"/>
+          </g>
+          <text x="200" y="80" font-family="Bangers" font-size="22" fill="#F2EDE0" text-anchor="middle" letter-spacing="2">3:47 AM</text>
+        </svg>
+        <div class="caption caption-bottom" style="background: var(--paper); border-color: var(--paper);">"i should sleep" — said every night, never meant</div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>The days didn't end. Messages stretched past midnight. Past 2 AM. Past 3.</p>
+      <p>I told you things I hadn't told anyone. You listened.</p>
+      <p class="emphasis">I just didn't want the talking to stop.</p>
+      <p class="joke">(My sleep schedule did not survive this chapter.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 4 ========== -->
+  <section class="page" data-page="4">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER FOUR</div>
+      <h2 class="chapter-title">When I Needed Him</h2>
+    </div>
+
+    <div class="panels layout-stack">
+      <div class="panel panel-wide" style="min-height: 180px;">
+        <svg viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="tone-4" x="0" y="0" width="3" height="3" patternUnits="userSpaceOnUse">
+              <circle cx="1.5" cy="1.5" r="0.5" fill="#14110D"/>
+            </pattern>
+            <linearGradient id="grad-4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#14110D" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#14110D" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="400" height="180" fill="url(#grad-4)"/>
+          <rect x="0" y="0" width="400" height="180" fill="url(#tone-4)" opacity="0.2"/>
+          <!-- Her sad chibi, head down -->
+          <g>
+            <ellipse cx="200" cy="150" rx="40" ry="25" fill="#14110D"/>
+            <ellipse cx="200" cy="95" rx="45" ry="45" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <!-- Hair covering more of face -->
+            <path d="M155 80 Q150 120 175 145 L225 145 Q250 120 245 80 Q230 50 200 50 Q170 50 155 80 Z" fill="#14110D"/>
+            <!-- Hair down sides -->
+            <path d="M158 100 Q155 160 165 175 L150 175 Q148 130 158 100 Z" fill="#14110D"/>
+            <path d="M242 100 Q245 160 235 175 L250 175 Q252 130 242 100 Z" fill="#14110D"/>
+            <!-- Sad eyes -->
+            <path d="M178 100 Q183 105 188 100" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M212 100 Q217 105 222 100" stroke="#14110D" stroke-width="2" fill="none"/>
+            <!-- Tiny mouth turned down -->
+            <path d="M195 122 Q200 118 205 122" stroke="#14110D" stroke-width="2" fill="none"/>
+            <!-- Tear -->
+            <ellipse cx="185" cy="115" rx="2.5" ry="5" fill="#A8C8E0"/>
+          </g>
+        </svg>
+        <div class="caption caption-top">Things with my roommate were falling apart.</div>
+      </div>
+
+      <div class="panels layout-asymmetric" style="grid-column: 1 / -1; margin: 0;">
+        <div class="panel" style="min-height: 180px;">
+          <svg viewBox="0 0 280 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="tone-4b" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <circle cx="2.5" cy="2.5" r="0.5" fill="#14110D"/>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="280" height="180" fill="url(#tone-4b)" opacity="0.12"/>
+            <!-- His chibi - listening, kind -->
+            <g>
+              <ellipse cx="140" cy="155" rx="30" ry="20" fill="#14110D"/>
+              <ellipse cx="140" cy="100" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+              <path d="M105 80 Q110 55 140 53 Q170 55 175 80 Q160 78 140 78 Q120 78 105 80 Z" fill="#14110D"/>
+              <!-- Soft eyes -->
+              <ellipse cx="128" cy="100" rx="4" ry="6" fill="#14110D"/>
+              <ellipse cx="152" cy="100" rx="4" ry="6" fill="#14110D"/>
+              <!-- Soft smile -->
+              <path d="M130 120 Q140 124 150 120" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </g>
+            <!-- Soft glow around him -->
+            <g stroke="#E8A5B0" stroke-width="2" fill="none" opacity="0.8">
+              <path d="M70 100 Q60 100 50 100"/>
+              <path d="M210 100 Q220 100 230 100"/>
+              <path d="M140 50 Q140 40 140 30"/>
+            </g>
+          </svg>
+          <div class="caption caption-top">"...I'm here."</div>
+        </div>
+
+        <div class="panel" style="min-height: 180px; background: var(--paper-shadow);">
+          <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+            <div style="font-family: 'Caveat', cursive; font-size: 1.2rem; text-align: center; line-height: 1.4;">
+              he didn't<br>try to fix it.<br>he just<br><strong style="color: var(--red); font-family: 'Kalam', cursive;">stayed.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tiny comedic self-aware panel -->
+      <div class="panel panel-wide" style="min-height: 100px; background: var(--pink-light);">
+        <svg viewBox="0 0 400 100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Chibi her, realization -->
+          <g>
+            <ellipse cx="200" cy="80" rx="22" ry="14" fill="#14110D"/>
+            <ellipse cx="200" cy="50" rx="26" ry="26" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <path d="M178 38 Q175 20 188 25 Q193 12 200 15 Q207 12 212 25 Q225 20 222 38" fill="#14110D"/>
+            <!-- Dawning realization eyes -->
+            <ellipse cx="192" cy="50" rx="4" ry="5" fill="#F2EDE0" stroke="#14110D" stroke-width="1.5"/>
+            <ellipse cx="208" cy="50" rx="4" ry="5" fill="#F2EDE0" stroke="#14110D" stroke-width="1.5"/>
+            <circle cx="192" cy="50" r="1.5" fill="#14110D"/>
+            <circle cx="208" cy="50" r="1.5" fill="#14110D"/>
+            <!-- Small "oh no" mouth -->
+            <ellipse cx="200" cy="62" rx="2" ry="3" fill="#14110D"/>
+          </g>
+          <!-- Heart pop -->
+          <path d="M250 35 Q245 28 250 25 Q255 27 255 35 Z" fill="#C8362E"/>
+          <path d="M155 30 Q150 23 155 20 Q160 22 160 30 Z" fill="#C8362E"/>
+        </svg>
+        <div class="thought" style="top: 10px; right: 15px; font-size: 0.85rem; max-width: 35%;">
+          oh no.<br>oh NO.<br>I'm in love with him.
+        </div>
+        <div class="sfx-tiny sfx" style="bottom: 10px; left: 15px;">terrible timing</div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>I was tired. Smaller than usual. Quieter.</p>
+      <p>And you didn't try to fix it. You just stayed. You listened. You reminded me I was okay.</p>
+      <p class="emphasis">I think I started loving you somewhere in that week.</p>
+      <p class="joke">(Very inconvenient timing, brain. Couldn't have picked literally any other week. Thanks.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 5 ========== -->
+  <section class="page" data-page="5">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER FIVE</div>
+      <h2 class="chapter-title">Waiting</h2>
+      <div class="chapter-date">~ refreshing for sport ~</div>
+    </div>
+
+    <!-- 4-panel waiting comedy -->
+    <div class="panels layout-2col">
+      <div class="panel">
+        <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="130" rx="35" ry="20" fill="#14110D"/>
+          <ellipse cx="100" cy="80" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+          <path d="M65 65 Q60 40 75 45 Q82 30 100 33 Q118 30 125 45 Q140 40 135 65" fill="#14110D"/>
+          <!-- Eyes locked on phone -->
+          <ellipse cx="88" cy="82" rx="4" ry="6" fill="#14110D"/>
+          <ellipse cx="112" cy="82" rx="4" ry="6" fill="#14110D"/>
+          <line x1="95" y1="100" x2="105" y2="100" stroke="#14110D" stroke-width="2" stroke-linecap="round"/>
+          <!-- Phone in hand -->
+          <rect x="85" y="120" width="30" height="12" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+        </svg>
+        <div class="thought" style="top: 10px; right: 10px;">any minute now</div>
+      </div>
+
+      <div class="panel">
+        <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- 5 minutes later -->
+          <ellipse cx="100" cy="130" rx="35" ry="20" fill="#14110D"/>
+          <ellipse cx="100" cy="80" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+          <path d="M65 65 Q60 40 75 45 Q82 30 100 33 Q118 30 125 45 Q140 40 135 65" fill="#14110D"/>
+          <ellipse cx="88" cy="82" rx="4" ry="6" fill="#14110D"/>
+          <ellipse cx="112" cy="82" rx="4" ry="6" fill="#14110D"/>
+          <line x1="95" y1="100" x2="105" y2="100" stroke="#14110D" stroke-width="2" stroke-linecap="round"/>
+          <rect x="85" y="120" width="30" height="12" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+          <!-- Sweat -->
+          <ellipse cx="140" cy="65" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+        </svg>
+        <div class="caption caption-top">5 minutes later...</div>
+        <div class="thought" style="bottom: 10px; left: 10px;">still nothing</div>
+      </div>
+
+      <div class="panel">
+        <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- 2 hours later, slightly disheveled -->
+          <ellipse cx="100" cy="130" rx="35" ry="20" fill="#14110D"/>
+          <ellipse cx="100" cy="80" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+          <path d="M60 65 Q55 40 75 45 Q82 30 100 33 Q118 30 125 45 Q145 40 140 65 Q135 50 100 50 Q65 50 60 65 Z" fill="#14110D"/>
+          <!-- Dead eyes (small dots) -->
+          <circle cx="88" cy="85" r="2" fill="#14110D"/>
+          <circle cx="112" cy="85" r="2" fill="#14110D"/>
+          <line x1="92" y1="100" x2="108" y2="100" stroke="#14110D" stroke-width="2"/>
+          <rect x="85" y="120" width="30" height="12" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+          <!-- Multiple sweat drops -->
+          <ellipse cx="140" cy="60" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+          <ellipse cx="60" cy="60" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+        </svg>
+        <div class="caption caption-top">2 hours later...</div>
+        <div class="thought" style="bottom: 10px; right: 10px;">maybe he's busy?</div>
+      </div>
+
+      <div class="panel" style="background: var(--paper-shadow);">
+        <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Lying face-down -->
+          <g>
+            <ellipse cx="100" cy="100" rx="60" ry="20" fill="#14110D"/>
+            <ellipse cx="55" cy="100" rx="22" ry="20" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M35 92 Q30 80 50 85 Q55 78 100 90 Q145 78 150 85 Q170 80 165 92 Z" fill="#14110D"/>
+            <!-- X eyes (defeated) -->
+            <g stroke="#14110D" stroke-width="2">
+              <line x1="48" y1="97" x2="54" y2="103"/>
+              <line x1="54" y1="97" x2="48" y2="103"/>
+              <line x1="60" y1="97" x2="66" y2="103"/>
+              <line x1="66" y1="97" x2="60" y2="103"/>
+            </g>
+          </g>
+        </svg>
+        <div class="caption caption-top">8 hours later.</div>
+        <div class="sfx sfx-small" style="bottom: 10px; right: 10px;">defeated</div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>I waited. Not for a message — for a sign. For something to tell me you felt it too.</p>
+      <p class="emphasis">Liking someone quietly is its own kind of ache.</p>
+      <p class="joke">(Also: when did checking my phone become a personality trait??)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 6 (kept serious) ========== -->
+  <section class="page" data-page="6">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER SIX</div>
+      <h2 class="chapter-title">December 2023</h2>
+      <div class="chapter-date">~ the first time I said it ~</div>
+    </div>
+
+    <div class="panels layout-stack">
+      <div class="panel panel-wide" style="min-height: 280px; background: #14110D;">
+        <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Snow -->
+          <g fill="#F2EDE0">
+            <circle cx="30" cy="50" r="2"/>
+            <circle cx="80" cy="30" r="1.5"/>
+            <circle cx="150" cy="60" r="2.5"/>
+            <circle cx="220" cy="20" r="1.5"/>
+            <circle cx="290" cy="55" r="2"/>
+            <circle cx="350" cy="35" r="2.5"/>
+            <circle cx="60" cy="100" r="2"/>
+            <circle cx="120" cy="120" r="1.5"/>
+            <circle cx="190" cy="110" r="2"/>
+            <circle cx="260" cy="130" r="2.5"/>
+            <circle cx="330" cy="115" r="1.5"/>
+            <circle cx="40" cy="180" r="2"/>
+            <circle cx="170" cy="190" r="1.5"/>
+            <circle cx="240" cy="210" r="2"/>
+            <circle cx="310" cy="195" r="2.5"/>
+            <circle cx="370" cy="180" r="1.5"/>
+          </g>
+          <g stroke="#C8362E" stroke-width="1.5" opacity="0.5">
+            <line x1="200" y1="140" x2="50" y2="50"/>
+            <line x1="200" y1="140" x2="200" y2="10"/>
+            <line x1="200" y1="140" x2="350" y2="40"/>
+            <line x1="200" y1="140" x2="380" y2="220"/>
+            <line x1="200" y1="140" x2="200" y2="270"/>
+            <line x1="200" y1="140" x2="20" y2="220"/>
+          </g>
+          <!-- Big heart -->
+          <path d="M200 200 Q160 160 175 130 Q190 110 200 135 Q210 110 225 130 Q240 160 200 200 Z"
+                fill="#C8362E" stroke="#F2EDE0" stroke-width="3"/>
+          <path d="M200 145 L195 165 L202 175 L198 185" stroke="#F2EDE0" stroke-width="1.5" stroke-dasharray="3,2" fill="none" opacity="0.7"/>
+        </svg>
+        <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-family: 'Bowlby One', sans-serif; font-size: 1.8rem; color: var(--paper); text-align: center; text-shadow: 3px 3px 0 var(--red);">
+          DECEMBER<br>2023
+        </div>
+      </div>
+
+      <div class="panels layout-2col" style="grid-column: 1 / -1; margin: 0;">
+        <div class="panel" style="min-height: 160px;">
+          <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- Her chibi looking down, sad confession -->
+            <g>
+              <ellipse cx="100" cy="135" rx="35" ry="20" fill="#14110D"/>
+              <ellipse cx="100" cy="80" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+              <path d="M65 65 Q60 40 75 45 Q82 30 100 33 Q118 30 125 45 Q140 40 135 65 Q130 55 100 55 Q70 55 65 65 Z" fill="#14110D"/>
+              <!-- Hair down -->
+              <path d="M68 80 Q60 130 70 145 L60 145 Q58 100 68 80 Z" fill="#14110D"/>
+              <path d="M132 80 Q140 130 130 145 L140 145 Q142 100 132 80 Z" fill="#14110D"/>
+              <!-- Closed/sad eyes -->
+              <path d="M85 85 Q90 90 95 85" stroke="#14110D" stroke-width="2" fill="none"/>
+              <path d="M105 85 Q110 90 115 85" stroke="#14110D" stroke-width="2" fill="none"/>
+              <!-- Small mouth -->
+              <path d="M95 105 Q100 102 105 105" stroke="#14110D" stroke-width="2" fill="none"/>
+            </g>
+          </svg>
+          <div class="bubble bubble-tl" style="top: 10px; right: 10px; font-style: italic;">
+            ...I love you
+          </div>
+        </div>
+
+        <div class="panel" style="min-height: 160px;">
+          <svg viewBox="0 0 200 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="tone-6b" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+                <circle cx="2.5" cy="2.5" r="0.7" fill="#14110D"/>
+              </pattern>
+            </defs>
+            <rect x="0" y="0" width="200" height="160" fill="url(#tone-6b)" opacity="0.3"/>
+            <!-- Her walking away chibi -->
+            <g fill="#14110D">
+              <ellipse cx="100" cy="135" rx="25" ry="15"/>
+              <ellipse cx="100" cy="80" rx="25" ry="25"/>
+              <path d="M82 70 Q72 95 78 130 L122 130 Q128 95 118 70 Z"/>
+              <path d="M83 75 Q75 95 70 120 Z"/>
+              <path d="M117 75 Q125 95 130 120 Z"/>
+            </g>
+            <g stroke="#14110D" stroke-width="1.5" opacity="0.5">
+              <line x1="30" y1="90" x2="60" y2="90"/>
+              <line x1="25" y1="100" x2="55" y2="100"/>
+              <line x1="140" y1="90" x2="170" y2="90"/>
+              <line x1="145" y1="100" x2="175" y2="100"/>
+            </g>
+          </svg>
+          <div class="sfx sfx-small" style="bottom: 5px; right: 5px;">walking away</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>I said it first. December. Cold outside, warmer in my chest than it had any right to be.</p>
+      <p>For five days, I believed the story was beginning.</p>
+      <p class="emphasis">But love that's rushed sometimes runs ahead of itself.</p>
+      <p>I walked away — not because I didn't love you, but because I did.</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 7 ========== -->
+  <section class="page" data-page="7">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER SEVEN</div>
+      <h2 class="chapter-title">The In-Between</h2>
+      <div class="chapter-date">~ definitely over it ~</div>
+    </div>
+
+    <div class="panels layout-2col">
+      <!-- Her declaring she's over it -->
+      <div class="panel" style="background: var(--pink-light);">
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#14110D" stroke-width="2" opacity="0.4">
+            <line x1="100" y1="90" x2="10" y2="20"/>
+            <line x1="100" y1="90" x2="100" y2="10"/>
+            <line x1="100" y1="90" x2="190" y2="20"/>
+          </g>
+          <!-- Determined chibi her -->
+          <g>
+            <ellipse cx="100" cy="150" rx="35" ry="20" fill="#14110D"/>
+            <ellipse cx="100" cy="95" rx="40" ry="40" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M62 78 Q57 50 75 55 Q80 38 100 41 Q120 38 125 55 Q143 50 138 78" fill="#14110D"/>
+            <!-- Determined eyes -->
+            <ellipse cx="88" cy="98" rx="5" ry="6" fill="#14110D"/>
+            <ellipse cx="112" cy="98" rx="5" ry="6" fill="#14110D"/>
+            <!-- Determined mouth (frowny line) -->
+            <line x1="92" y1="118" x2="108" y2="118" stroke="#14110D" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Arms crossed (chibi style - just a band) -->
+            <path d="M70 140 Q100 130 130 140" stroke="#14110D" stroke-width="3" fill="none"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 10px; left: 50%; transform: translateX(-50%); font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 0.1em;">
+          I AM SO OVER HIM.
+        </div>
+      </div>
+
+      <!-- Her secretly checking his profile -->
+      <div class="panel">
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Sneaky chibi -->
+          <g>
+            <ellipse cx="100" cy="145" rx="32" ry="20" fill="#14110D"/>
+            <ellipse cx="100" cy="90" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M65 75 Q60 50 75 55 Q82 40 100 43 Q118 40 125 55 Q140 50 135 75" fill="#14110D"/>
+            <!-- Side-glancing eyes -->
+            <ellipse cx="92" cy="92" rx="5" ry="6" fill="#14110D"/>
+            <ellipse cx="116" cy="92" rx="5" ry="6" fill="#14110D"/>
+            <circle cx="95" cy="90" r="1.5" fill="#F2EDE0"/>
+            <circle cx="119" cy="90" r="1.5" fill="#F2EDE0"/>
+            <line x1="95" y1="112" x2="105" y2="112" stroke="#14110D" stroke-width="2"/>
+            <!-- Phone hidden close -->
+            <rect x="80" y="125" width="40" height="18" rx="3" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <rect x="85" y="130" width="30" height="8" fill="#E8A5B0"/>
+          </g>
+        </svg>
+        <div class="thought" style="top: 10px; right: 10px; font-size: 0.85rem;">
+          just checking<br>once... last time
+        </div>
+        <div class="sfx-tiny sfx" style="bottom: 5px; left: 5px;">(47th time today)</div>
+      </div>
+
+      <!-- Friend's reaction -->
+      <div class="panel panel-wide" style="min-height: 130px;">
+        <svg viewBox="0 0 400 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Two chibi heads - her with phone, friend judging -->
+          <g>
+            <!-- Her holding phone -->
+            <ellipse cx="120" cy="115" rx="30" ry="15" fill="#14110D"/>
+            <ellipse cx="120" cy="65" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M88 50 Q85 28 100 33 Q108 18 120 21 Q132 18 140 33 Q155 28 152 50" fill="#14110D"/>
+            <!-- Sweat lines on her face -->
+            <ellipse cx="150" cy="60" rx="2.5" ry="5" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+            <ellipse cx="148" cy="68" rx="2.5" ry="5" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+            <!-- Eyes -->
+            <ellipse cx="110" cy="68" rx="4" ry="5" fill="#14110D"/>
+            <ellipse cx="130" cy="68" rx="4" ry="5" fill="#14110D"/>
+            <line x1="115" y1="85" x2="125" y2="85" stroke="#14110D" stroke-width="2"/>
+            <rect x="105" y="98" width="30" height="14" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+
+            <!-- Friend with "..." face -->
+            <ellipse cx="280" cy="115" rx="30" ry="15" fill="#14110D"/>
+            <ellipse cx="280" cy="65" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M250 45 Q255 30 280 28 Q305 30 310 45 Q295 47 280 47 Q265 47 250 45 Z" fill="#14110D"/>
+            <!-- Unimpressed eyes (flat lines) -->
+            <line x1="266" y1="68" x2="276" y2="68" stroke="#14110D" stroke-width="2"/>
+            <line x1="284" y1="68" x2="294" y2="68" stroke="#14110D" stroke-width="2"/>
+            <!-- Skeptical mouth -->
+            <path d="M270 88 Q280 85 290 88" stroke="#14110D" stroke-width="2" fill="none"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-tr" style="top: 10px; right: 50px;">
+          ...girl.
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>This is the chapter most people would skip. I'm not going to.</p>
+      <p>Nights I missed you and pretended I didn't. Days I almost texted and didn't.</p>
+      <p class="emphasis">On and off, like a light neither of us wanted to fully turn out.</p>
+      <p class="joke">(My friends watched me check his profile 5,000 times. They never said a word. They were saints. Or just tired.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 8 ========== -->
+  <section class="page" data-page="8">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER EIGHT</div>
+      <h2 class="chapter-title">Back to Talking</h2>
+      <div class="chapter-date">~ ✨ playing it cool ✨ ~</div>
+    </div>
+
+    <div class="panels layout-2col">
+      <!-- Resolution -->
+      <div class="panel" style="background: var(--pink-light);">
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#14110D" stroke-width="2" opacity="0.5">
+            <line x1="100" y1="90" x2="20" y2="20"/>
+            <line x1="100" y1="90" x2="100" y2="10"/>
+            <line x1="100" y1="90" x2="180" y2="20"/>
+          </g>
+          <g>
+            <ellipse cx="100" cy="150" rx="32" ry="18" fill="#14110D"/>
+            <ellipse cx="100" cy="95" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M65 78 Q60 50 75 55 Q82 38 100 41 Q118 38 125 55 Q140 50 135 78" fill="#14110D"/>
+            <!-- Confident eyes -->
+            <ellipse cx="88" cy="98" rx="5" ry="6" fill="#14110D"/>
+            <ellipse cx="112" cy="98" rx="5" ry="6" fill="#14110D"/>
+            <!-- Determined line -->
+            <line x1="92" y1="118" x2="108" y2="118" stroke="#14110D" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 10px; left: 50%; transform: translateX(-50%); font-family: 'Bangers', cursive; font-size: 0.9rem; letter-spacing: 0.1em;">
+          I WILL BE CHILL.
+        </div>
+      </div>
+
+      <!-- He texts. immediate freakout. -->
+      <div class="panel">
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Vertical despair lines -->
+          <g stroke="#14110D" stroke-width="1.5" opacity="0.5">
+            <line x1="20" y1="20" x2="20" y2="160"/>
+            <line x1="35" y1="20" x2="35" y2="160"/>
+            <line x1="165" y1="20" x2="165" y2="160"/>
+            <line x1="180" y1="20" x2="180" y2="160"/>
+          </g>
+          <g>
+            <ellipse cx="100" cy="145" rx="30" ry="18" fill="#14110D"/>
+            <ellipse cx="100" cy="90" rx="38" ry="38" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M65 75 Q60 50 75 55 Q82 40 100 43 Q118 40 125 55 Q140 50 135 75" fill="#14110D"/>
+            <!-- HUGE shocked eyes -->
+            <ellipse cx="88" cy="92" rx="7" ry="9" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <ellipse cx="112" cy="92" rx="7" ry="9" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <circle cx="88" cy="92" r="3" fill="#14110D"/>
+            <circle cx="112" cy="92" r="3" fill="#14110D"/>
+            <!-- O mouth -->
+            <ellipse cx="100" cy="112" rx="3" ry="4" fill="#14110D"/>
+            <!-- Many sweat drops -->
+            <ellipse cx="135" cy="75" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+            <ellipse cx="65" cy="75" rx="3" ry="6" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+            <ellipse cx="140" cy="100" rx="2" ry="4" fill="#A8C8E0" stroke="#14110D" stroke-width="1"/>
+          </g>
+        </svg>
+        <div class="sfx sfx-small" style="top: 5px; right: 5px; color: var(--pink); text-shadow: 2px 2px 0 var(--ink);">PING ♡</div>
+        <div class="thought" style="bottom: 10px; left: 10px; font-size: 0.85rem;">
+          he texted he texted<br>HE TEXTED
+        </div>
+      </div>
+
+      <!-- The "cool" response that's 12 paragraphs -->
+      <div class="panel panel-wide" style="min-height: 180px;">
+        <svg viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Phone with WALL OF TEXT -->
+          <rect x="100" y="20" width="200" height="140" rx="10" fill="#F2EDE0" stroke="#14110D" stroke-width="3"/>
+          <!-- His tiny message -->
+          <rect x="115" y="35" width="60" height="14" rx="7" fill="#A8C8E0"/>
+          <text x="145" y="46" font-family="Patrick Hand" font-size="9" text-anchor="middle">hey :)</text>
+          <!-- Her massive response -->
+          <rect x="180" y="55" width="110" height="14" rx="7" fill="#E8A5B0"/>
+          <rect x="180" y="72" width="110" height="14" rx="7" fill="#E8A5B0"/>
+          <rect x="180" y="89" width="105" height="14" rx="7" fill="#E8A5B0"/>
+          <rect x="180" y="106" width="110" height="14" rx="7" fill="#E8A5B0"/>
+          <rect x="180" y="123" width="100" height="14" rx="7" fill="#E8A5B0"/>
+          <rect x="180" y="140" width="110" height="14" rx="7" fill="#E8A5B0"/>
+        </svg>
+        <div class="caption caption-top">"Just gonna send a casual reply..."</div>
+        <div class="sfx sfx-small" style="bottom: 15px; right: 15px;">12 paragraphs later</div>
+      </div>
+
+      <!-- The smile -->
+      <div class="panel panel-wide" style="min-height: 130px;">
+        <svg viewBox="0 0 400 130" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="tone-8" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+              <circle cx="2.5" cy="2.5" r="0.5" fill="#14110D"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="400" height="130" fill="url(#tone-8)" opacity="0.12"/>
+          <!-- Just a smile close up -->
+          <path d="M150 70 Q200 95 250 70" stroke="#14110D" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Blush -->
+          <g fill="#E8A5B0" opacity="0.7">
+            <ellipse cx="115" cy="65" rx="15" ry="6"/>
+            <ellipse cx="285" cy="65" rx="15" ry="6"/>
+          </g>
+          <!-- Sparkles -->
+          <g stroke="#C8362E" stroke-width="2" fill="none">
+            <path d="M50 30 L50 40 M45 35 L55 35"/>
+            <path d="M350 30 L350 40 M345 35 L355 35"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-bl" style="bottom: 15px; left: 50%; transform: translateX(-50%);">
+          ...hi.
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>We found our way back. Not to who we were — to who we were becoming.</p>
+      <p class="emphasis">The first time, I fell for an idea of you. The second time, I was choosing the real one.</p>
+      <p class="joke">(Did I play it cool? Define "cool." Did I send a paragraph at 2 AM? Possibly. Definitely.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 9 (kept serious) ========== -->
+  <section class="page" data-page="9">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER NINE</div>
+      <h2 class="chapter-title">April 2024</h2>
+      <div class="chapter-date">~ the time it stayed ~</div>
+    </div>
+
+    <div class="panels layout-stack">
+      <div class="panel panel-wide" style="min-height: 300px;">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="glow-9" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#E8A5B0" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#E8A5B0" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse cx="200" cy="150" rx="200" ry="160" fill="url(#glow-9)"/>
+
+          <g stroke="#C8362E" stroke-width="1" opacity="0.4">
+            <line x1="200" y1="150" x2="40" y2="40"/>
+            <line x1="200" y1="150" x2="200" y2="20"/>
+            <line x1="200" y1="150" x2="360" y2="40"/>
+            <line x1="200" y1="150" x2="380" y2="150"/>
+            <line x1="200" y1="150" x2="360" y2="260"/>
+            <line x1="200" y1="150" x2="40" y2="260"/>
+            <line x1="200" y1="150" x2="20" y2="150"/>
+          </g>
+
+          <!-- Sakura petals -->
+          <g fill="#E8A5B0" opacity="0.9">
+            <g transform="translate(50, 40)">
+              <ellipse cx="0" cy="-5" rx="3" ry="6"/>
+              <ellipse cx="5" cy="0" rx="3" ry="6" transform="rotate(72)"/>
+              <ellipse cx="3" cy="5" rx="3" ry="6" transform="rotate(144)"/>
+              <ellipse cx="-3" cy="5" rx="3" ry="6" transform="rotate(216)"/>
+              <ellipse cx="-5" cy="0" rx="3" ry="6" transform="rotate(288)"/>
+              <circle cx="0" cy="0" r="1.5" fill="#C8362E"/>
+            </g>
+            <g transform="translate(350, 60)">
+              <ellipse cx="0" cy="-5" rx="3" ry="6"/>
+              <ellipse cx="5" cy="0" rx="3" ry="6" transform="rotate(72)"/>
+              <ellipse cx="3" cy="5" rx="3" ry="6" transform="rotate(144)"/>
+              <ellipse cx="-3" cy="5" rx="3" ry="6" transform="rotate(216)"/>
+              <ellipse cx="-5" cy="0" rx="3" ry="6" transform="rotate(288)"/>
+              <circle cx="0" cy="0" r="1.5" fill="#C8362E"/>
+            </g>
+            <g transform="translate(360, 240)">
+              <ellipse cx="0" cy="-5" rx="3" ry="6"/>
+              <ellipse cx="5" cy="0" rx="3" ry="6" transform="rotate(72)"/>
+              <ellipse cx="3" cy="5" rx="3" ry="6" transform="rotate(144)"/>
+              <ellipse cx="-3" cy="5" rx="3" ry="6" transform="rotate(216)"/>
+              <ellipse cx="-5" cy="0" rx="3" ry="6" transform="rotate(288)"/>
+              <circle cx="0" cy="0" r="1.5" fill="#C8362E"/>
+            </g>
+            <g transform="translate(40, 260)">
+              <ellipse cx="0" cy="-5" rx="3" ry="6"/>
+              <ellipse cx="5" cy="0" rx="3" ry="6" transform="rotate(72)"/>
+              <ellipse cx="3" cy="5" rx="3" ry="6" transform="rotate(144)"/>
+              <ellipse cx="-3" cy="5" rx="3" ry="6" transform="rotate(216)"/>
+              <ellipse cx="-5" cy="0" rx="3" ry="6" transform="rotate(288)"/>
+              <circle cx="0" cy="0" r="1.5" fill="#C8362E"/>
+            </g>
+            <ellipse cx="100" cy="80" rx="3" ry="5" transform="rotate(30 100 80)"/>
+            <ellipse cx="300" cy="120" rx="3" ry="5" transform="rotate(-30 300 120)"/>
+            <ellipse cx="80" cy="200" rx="2" ry="4" transform="rotate(20 80 200)"/>
+            <ellipse cx="320" cy="180" rx="2" ry="4" transform="rotate(45 320 180)"/>
+          </g>
+
+          <!-- Two chibi figures together -->
+          <g>
+            <!-- Her -->
+            <ellipse cx="170" cy="250" rx="25" ry="20" fill="#14110D"/>
+            <ellipse cx="170" cy="180" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M137 165 Q132 140 150 145 Q155 130 170 133 Q185 130 190 145 Q208 140 203 165" fill="#14110D"/>
+            <!-- Big happy eyes -->
+            <ellipse cx="158" cy="182" rx="5" ry="7" fill="#14110D"/>
+            <ellipse cx="182" cy="182" rx="5" ry="7" fill="#14110D"/>
+            <circle cx="159" cy="180" r="2" fill="#F2EDE0"/>
+            <circle cx="183" cy="180" r="2" fill="#F2EDE0"/>
+            <!-- Big smile -->
+            <path d="M158 202 Q170 212 182 202" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Blush -->
+            <ellipse cx="143" cy="195" rx="5" ry="3" fill="#E8A5B0"/>
+            <ellipse cx="197" cy="195" rx="5" ry="3" fill="#E8A5B0"/>
+
+            <!-- Him -->
+            <ellipse cx="230" cy="250" rx="25" ry="20" fill="#14110D"/>
+            <ellipse cx="230" cy="180" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M200 160 Q205 142 230 140 Q255 142 260 160 Q245 158 230 158 Q215 158 200 160 Z" fill="#14110D"/>
+            <ellipse cx="218" cy="182" rx="5" ry="7" fill="#14110D"/>
+            <ellipse cx="242" cy="182" rx="5" ry="7" fill="#14110D"/>
+            <circle cx="219" cy="180" r="2" fill="#F2EDE0"/>
+            <circle cx="243" cy="180" r="2" fill="#F2EDE0"/>
+            <path d="M218 202 Q230 212 242 202" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="207" cy="195" rx="5" ry="3" fill="#E8A5B0"/>
+            <ellipse cx="253" cy="195" rx="5" ry="3" fill="#E8A5B0"/>
+          </g>
+          <!-- Hand-holding -->
+          <ellipse cx="200" cy="235" rx="12" ry="6" fill="#14110D"/>
+          <!-- Sparkles -->
+          <g stroke="#C8362E" stroke-width="2" fill="none">
+            <path d="M120 130 L120 142 M115 136 L125 136"/>
+            <path d="M280 130 L280 142 M275 136 L285 136"/>
+            <path d="M200 100 L200 112 M195 106 L205 106"/>
+          </g>
+          <!-- Heart above -->
+          <path d="M200 90 Q190 75 200 65 Q210 60 213 75 Q216 60 226 65 Q236 75 226 90 Q213 105 200 90 Z" fill="#C8362E"/>
+        </svg>
+        <div style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-family: 'Bowlby One', sans-serif; font-size: 1.8rem; color: var(--ink); text-shadow: 3px 3px 0 var(--pink);">
+          APRIL 2024
+        </div>
+        <div class="bubble bubble-tr" style="top: 80px; left: 20px; background: var(--paper); border-color: var(--red); font-weight: 700; max-width: 50%;">
+          I can't live without you.
+        </div>
+        <div class="sfx sfx-big" style="bottom: 20px; right: 20px; color: var(--red);">
+          DOKIN ♡
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>April came, and so did the truth I couldn't outrun.</p>
+      <p>I said it again. Same words. Different heart. Different us.</p>
+      <p class="emphasis">And this time — this time, it stayed.</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 10 — FULL COMEDY ========== -->
+  <section class="page" data-page="10">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER TEN</div>
+      <h2 class="chapter-title">Lows and Highs</h2>
+      <div class="chapter-date">~ everyday couple chaos ~</div>
+    </div>
+
+    <!-- 6 small panels of daily life -->
+    <div class="panels layout-3col">
+      <!-- 1: Who ate the food argument -->
+      <div class="panel" style="min-height: 140px;">
+        <svg viewBox="0 0 150 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <ellipse cx="75" cy="115" rx="30" ry="15" fill="#14110D"/>
+            <ellipse cx="75" cy="75" rx="30" ry="30" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M48 60 Q43 38 60 42 Q65 28 75 31 Q85 28 90 42 Q107 38 102 60" fill="#14110D"/>
+            <!-- Angry eyes -->
+            <path d="M62 75 L72 78" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M88 75 L78 78" stroke="#14110D" stroke-width="2.5"/>
+            <!-- Pouty mouth -->
+            <ellipse cx="75" cy="93" rx="4" ry="2" fill="#14110D"/>
+            <!-- Anger marks -->
+            <g stroke="#C8362E" stroke-width="2" fill="none">
+              <path d="M30 40 L25 35 M38 35 L33 30"/>
+              <path d="M120 40 L125 35 M112 35 L117 30"/>
+            </g>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 5px; left: 50%; transform: translateX(-50%); font-size: 0.75rem;">
+          WHO ate it??
+        </div>
+      </div>
+
+      <!-- 2: His reply -->
+      <div class="panel" style="min-height: 140px; background: var(--pink-light);">
+        <svg viewBox="0 0 150 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <ellipse cx="75" cy="115" rx="30" ry="15" fill="#14110D"/>
+            <ellipse cx="75" cy="75" rx="30" ry="30" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M50 55 Q55 38 75 36 Q95 38 100 55 Q88 55 75 55 Q62 55 50 55 Z" fill="#14110D"/>
+            <!-- Soft smile -->
+            <ellipse cx="65" cy="78" rx="3" ry="4" fill="#14110D"/>
+            <ellipse cx="85" cy="78" rx="3" ry="4" fill="#14110D"/>
+            <path d="M67 93 Q75 97 83 93" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Hearts -->
+            <path d="M30 50 Q27 45 30 42 Q33 44 33 50 Z" fill="#C8362E"/>
+            <path d="M120 50 Q117 45 120 42 Q123 44 123 50 Z" fill="#C8362E"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 5px; left: 50%; transform: translateX(-50%); font-size: 0.75rem;">
+          I love you ♡
+        </div>
+      </div>
+
+      <!-- 3: ANSWER ME -->
+      <div class="panel" style="min-height: 140px;">
+        <svg viewBox="0 0 150 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#14110D" stroke-width="2" opacity="0.5">
+            <line x1="75" y1="70" x2="10" y2="20"/>
+            <line x1="75" y1="70" x2="75" y2="10"/>
+            <line x1="75" y1="70" x2="140" y2="20"/>
+          </g>
+          <g>
+            <ellipse cx="75" cy="115" rx="30" ry="15" fill="#14110D"/>
+            <ellipse cx="75" cy="75" rx="32" ry="32" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M45 60 Q40 35 60 40 Q65 25 75 28 Q85 25 90 40 Q110 35 105 60" fill="#14110D"/>
+            <!-- Bigger angry eyes -->
+            <ellipse cx="62" cy="75" rx="5" ry="6" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <ellipse cx="88" cy="75" rx="5" ry="6" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <circle cx="62" cy="76" r="2" fill="#14110D"/>
+            <circle cx="88" cy="76" r="2" fill="#14110D"/>
+            <!-- Shouting mouth -->
+            <ellipse cx="75" cy="95" rx="6" ry="5" fill="#14110D"/>
+          </g>
+        </svg>
+        <div class="sfx sfx-small" style="top: 5px; right: 5px;">ANSWER!!</div>
+      </div>
+
+      <!-- 4: Snoring -->
+      <div class="panel" style="min-height: 140px;">
+        <svg viewBox="0 0 150 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="tone-10d" x="0" y="0" width="5" height="5" patternUnits="userSpaceOnUse">
+              <circle cx="2.5" cy="2.5" r="0.5" fill="#14110D"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="150" height="140" fill="url(#tone-10d)" opacity="0.15"/>
+          <!-- Him sleeping (chibi sideways) -->
+          <g>
+            <ellipse cx="75" cy="95" rx="50" ry="20" fill="#14110D"/>
+            <ellipse cx="40" cy="85" rx="22" ry="22" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M22 75 Q25 60 45 65 Q55 60 60 75 Q50 70 35 73 Z" fill="#14110D"/>
+            <!-- Closed eye -->
+            <path d="M30 85 Q35 80 40 85" stroke="#14110D" stroke-width="2" fill="none"/>
+            <!-- Open mouth (snoring) -->
+            <ellipse cx="40" cy="95" rx="3" ry="2" fill="#14110D"/>
+          </g>
+          <!-- Z's -->
+          <g font-family="Bangers" fill="#14110D">
+            <text x="80" y="50" font-size="14">z</text>
+            <text x="95" y="40" font-size="18">Z</text>
+            <text x="115" y="28" font-size="22">Z</text>
+          </g>
+        </svg>
+        <div class="caption caption-bottom" style="font-size: 0.8rem;">3:00 AM. Every night.</div>
+      </div>
+
+      <!-- 5: Stealing fries -->
+      <div class="panel" style="min-height: 140px;">
+        <svg viewBox="0 0 150 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fries box -->
+          <path d="M55 70 L60 110 L90 110 L95 70 Z" fill="#C8362E" stroke="#14110D" stroke-width="2"/>
+          <!-- Fries sticking up -->
+          <g stroke="#14110D" stroke-width="2" fill="#F2EDE0">
+            <rect x="62" y="40" width="4" height="32"/>
+            <rect x="70" y="35" width="4" height="35"/>
+            <rect x="78" y="42" width="4" height="30"/>
+            <rect x="86" y="38" width="4" height="34"/>
+          </g>
+          <!-- Sneaky hand -->
+          <g stroke="#14110D" stroke-width="2.5" fill="#F2EDE0">
+            <path d="M120 55 Q100 50 80 45"/>
+            <line x1="83" y1="48" x2="80" y2="40"/>
+            <line x1="90" y1="48" x2="88" y2="38"/>
+            <line x1="100" y1="50" x2="98" y2="42"/>
+          </g>
+        </svg>
+        <div class="sfx sfx-tiny sfx" style="top: 5px; right: 5px;">sneak</div>
+      </div>
+
+      <!-- 6: laughing together -->
+      <div class="panel" style="min-height: 140px; background: var(--pink-light);">
+        <svg viewBox="0 0 150 140" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <!-- Two chibis laughing -->
+            <ellipse cx="55" cy="110" rx="20" ry="14" fill="#14110D"/>
+            <ellipse cx="55" cy="75" rx="22" ry="22" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <path d="M35 65 Q32 50 45 53 Q50 42 55 45 Q60 42 65 53 Q78 50 75 65" fill="#14110D"/>
+            <!-- ^^ eyes -->
+            <path d="M44 75 Q48 70 52 75" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M58 75 Q62 70 66 75" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M48 88 Q55 95 62 88" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+            <ellipse cx="100" cy="110" rx="20" ry="14" fill="#14110D"/>
+            <ellipse cx="100" cy="75" rx="22" ry="22" fill="#F2EDE0" stroke="#14110D" stroke-width="2"/>
+            <path d="M80 58 Q83 45 100 43 Q117 45 120 58 Q110 56 100 56 Q90 56 80 58 Z" fill="#14110D"/>
+            <path d="M89 75 Q93 70 97 75" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M103 75 Q107 70 111 75" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M93 88 Q100 95 107 88" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- Music notes / laughter -->
+          <g fill="#C8362E">
+            <path d="M25 30 Q25 25 30 25 Q30 35 25 35 Z"/>
+            <path d="M125 25 Q125 20 130 20 Q130 30 125 30 Z"/>
+          </g>
+        </svg>
+        <div class="sfx sfx-small" style="bottom: 5px; right: 5px;">haha!</div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>Arguments that felt like the end of the world for an hour.</p>
+      <p>Ordinary Tuesdays that felt like everything.</p>
+      <p>Silences. Laughter. Snoring. Stolen fries.</p>
+      <p class="emphasis">We aren't perfect. We are practiced.</p>
+      <p class="joke">(And we BOTH know exactly who eats the last cookie. Same person every time.)</p>
+    </div>
+  </section>
+
+  <!-- ========== CHAPTER 11 ========== -->
+  <section class="page" data-page="11">
+    <div class="chapter-header">
+      <div class="chapter-num">CHAPTER ELEVEN</div>
+      <h2 class="chapter-title">Us, Now</h2>
+    </div>
+
+    <div class="panels layout-stack">
+      <div class="panel panel-wide" style="min-height: 320px;">
+        <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky-11" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#E8A5B0" stop-opacity="0.5"/>
+              <stop offset="60%" stop-color="#F2EDE0" stop-opacity="0.1"/>
+              <stop offset="100%" stop-color="#F2EDE0" stop-opacity="0"/>
+            </linearGradient>
+            <pattern id="tone-11" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="3" r="0.5" fill="#14110D"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="400" height="320" fill="url(#sky-11)"/>
+          <rect x="0" y="240" width="400" height="80" fill="url(#tone-11)" opacity="0.4"/>
+
+          <circle cx="320" cy="180" r="40" fill="#C8362E" opacity="0.7"/>
+          <circle cx="320" cy="180" r="40" fill="none" stroke="#14110D" stroke-width="2"/>
+          <line x1="0" y1="200" x2="400" y2="200" stroke="#14110D" stroke-width="2"/>
+
+          <!-- Two chibi figures from behind looking at horizon -->
+          <g fill="#14110D">
+            <ellipse cx="170" cy="270" rx="25" ry="15"/>
+            <ellipse cx="170" cy="210" rx="30" ry="30"/>
+            <path d="M145 200 Q140 155 145 130 L155 130 Q158 155 152 200 Z"/>
+            <path d="M195 200 Q200 155 195 130 L185 130 Q182 155 188 200 Z"/>
+
+            <ellipse cx="230" cy="270" rx="25" ry="15"/>
+            <ellipse cx="230" cy="205" rx="32" ry="32"/>
+          </g>
+          <ellipse cx="200" cy="250" rx="14" ry="7" fill="#14110D"/>
+
+          <g fill="#E8A5B0" opacity="0.8">
+            <ellipse cx="60" cy="80" rx="3" ry="5" transform="rotate(30 60 80)"/>
+            <ellipse cx="100" cy="50" rx="2" ry="4" transform="rotate(-20 100 50)"/>
+            <ellipse cx="350" cy="90" rx="3" ry="5" transform="rotate(45 350 90)"/>
+            <ellipse cx="40" cy="160" rx="2" ry="4" transform="rotate(60 40 160)"/>
+          </g>
+          <g stroke="#C8362E" stroke-width="1.5" fill="none" opacity="0.6">
+            <path d="M50 40 L50 50 M45 45 L55 45"/>
+            <path d="M380 30 L380 40 M375 35 L385 35"/>
+          </g>
+        </svg>
+        <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-family: 'Caveat', cursive; font-weight: 700; font-size: 1.3rem; color: var(--paper); background: var(--ink); padding: 0.4rem 1rem;">
+          ...and we keep living.
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <p>Here we are. Past the false start. Past the breaking. Past the coming back.</p>
+      <p class="emphasis">I don't know what every chapter ahead looks like. But I know I want them with you.</p>
+      <p>This isn't an ending. It's just the page where I stop writing —</p>
+      <p class="emphasis">and we keep living.</p>
+      <p class="joke">(...probably arguing about who left the lights on. Forever.)</p>
+    </div>
+  </section>
+
+  <!-- ========== BONUS: 4-KOMA ========== -->
+  <section class="page" data-page="12">
+    <div class="chapter-header">
+      <div class="chapter-num">★ BONUS STRIP ★</div>
+      <h2 class="chapter-title">The "Sleep Early" Promise</h2>
+      <div class="chapter-date">~ a typical Tuesday ~</div>
+    </div>
+
+    <div class="koma-strip">
+      <!-- Panel 1: Setting a bedtime -->
+      <div class="koma-panel">
+        <div class="koma-num">①</div>
+        <svg viewBox="0 0 250 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <ellipse cx="125" cy="155" rx="50" ry="20" fill="#14110D"/>
+            <ellipse cx="125" cy="90" rx="45" ry="45" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M82 75 Q77 45 95 50 Q100 33 125 36 Q150 33 155 50 Q173 45 168 75" fill="#14110D"/>
+            <!-- Confident eyes -->
+            <ellipse cx="110" cy="90" rx="5" ry="6" fill="#14110D"/>
+            <ellipse cx="140" cy="90" rx="5" ry="6" fill="#14110D"/>
+            <!-- Determined line -->
+            <line x1="115" y1="112" x2="135" y2="112" stroke="#14110D" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 5px; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">
+          we should sleep<br>by 11 tonight.
+        </div>
+      </div>
+
+      <!-- Panel 2: He agrees -->
+      <div class="koma-panel">
+        <div class="koma-num">②</div>
+        <svg viewBox="0 0 250 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <ellipse cx="125" cy="155" rx="50" ry="20" fill="#14110D"/>
+            <ellipse cx="125" cy="90" rx="45" ry="45" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M88 65 Q95 45 125 43 Q155 45 162 65 Q145 63 125 63 Q105 63 88 65 Z" fill="#14110D"/>
+            <ellipse cx="110" cy="92" rx="5" ry="6" fill="#14110D"/>
+            <ellipse cx="140" cy="92" rx="5" ry="6" fill="#14110D"/>
+            <!-- Calm smile -->
+            <path d="M113 113 Q125 118 137 113" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Thumbs up -->
+            <g stroke="#14110D" stroke-width="2.5" fill="#F2EDE0">
+              <path d="M180 130 L180 100 L185 95 L195 100 L195 130"/>
+            </g>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 5px; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">
+          agreed. responsible.
+        </div>
+      </div>
+
+      <!-- Panel 3: 3AM, still talking -->
+      <div class="koma-panel" style="background: #14110D;">
+        <div class="koma-num" style="color: var(--pink);">③</div>
+        <svg viewBox="0 0 250 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stars -->
+          <g fill="#F2EDE0">
+            <circle cx="30" cy="30" r="1.5"/>
+            <circle cx="80" cy="25" r="1"/>
+            <circle cx="220" cy="35" r="1.5"/>
+            <circle cx="200" cy="20" r="1"/>
+          </g>
+          <!-- Clock -->
+          <circle cx="125" cy="65" r="30" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+          <line x1="125" y1="65" x2="125" y2="48" stroke="#14110D" stroke-width="2.5"/>
+          <line x1="125" y1="65" x2="138" y2="65" stroke="#14110D" stroke-width="2"/>
+          <circle cx="125" cy="65" r="2" fill="#14110D"/>
+          <text x="125" y="115" text-anchor="middle" font-family="Bangers" font-size="20" fill="#F2EDE0">3:00 AM</text>
+          <!-- Speech bubbles overlapping -->
+          <rect x="20" y="130" width="80" height="20" rx="10" fill="#E8A5B0"/>
+          <rect x="150" y="145" width="80" height="20" rx="10" fill="#F2EDE0"/>
+          <rect x="40" y="155" width="80" height="18" rx="9" fill="#E8A5B0"/>
+        </svg>
+      </div>
+
+      <!-- Panel 4: "one more thing" -->
+      <div class="koma-panel" style="background: var(--pink-light);">
+        <div class="koma-num">④</div>
+        <svg viewBox="0 0 250 180" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <!-- Both faces side by side, sleep-deprived but laughing -->
+            <ellipse cx="80" cy="130" rx="32" ry="15" fill="#14110D"/>
+            <ellipse cx="80" cy="80" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M50 65 Q45 40 60 45 Q67 28 80 31 Q93 28 100 45 Q115 40 110 65" fill="#14110D"/>
+            <!-- Tired but happy -->
+            <path d="M68 82 Q73 76 78 82" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M82 82 Q87 76 92 82" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M72 100 Q80 105 88 100" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Tired marks -->
+            <line x1="105" y1="78" x2="115" y2="82" stroke="#C8362E" stroke-width="1.5"/>
+            <line x1="105" y1="83" x2="115" y2="87" stroke="#C8362E" stroke-width="1.5"/>
+
+            <ellipse cx="170" cy="130" rx="32" ry="15" fill="#14110D"/>
+            <ellipse cx="170" cy="80" rx="35" ry="35" fill="#F2EDE0" stroke="#14110D" stroke-width="2.5"/>
+            <path d="M140 60 Q145 42 170 40 Q195 42 200 60 Q185 58 170 58 Q155 58 140 60 Z" fill="#14110D"/>
+            <path d="M158 82 Q163 76 168 82" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M172 82 Q177 76 182 82" stroke="#14110D" stroke-width="2" fill="none"/>
+            <path d="M162 100 Q170 105 178 100" stroke="#14110D" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <line x1="135" y1="78" x2="145" y2="82" stroke="#C8362E" stroke-width="1.5"/>
+            <line x1="135" y1="83" x2="145" y2="87" stroke="#C8362E" stroke-width="1.5"/>
+          </g>
+        </svg>
+        <div class="bubble bubble-tl" style="top: 5px; left: 50%; transform: translateX(-50%); font-size: 0.75rem;">
+          ...one more thing.
+        </div>
+        <div class="sfx-tiny sfx" style="bottom: 5px; right: 5px;">every. single. time.</div>
+      </div>
+    </div>
+
+    <div class="monologue" style="margin-top: 1.5rem;">
+      <p class="joke">~ END BONUS STRIP ~</p>
+      <p>some moments are too small for a chapter. but too us to leave out. ♡</p>
+    </div>
+  </section>
+
+  <!-- ========== FINAL ========== -->
+  <section class="page final" data-page="13">
+    <div class="final-frame">
+      <div class="cover-tag" style="margin-bottom: 1rem;">★ END OF VOLUME 1 ★</div>
+
+      <h2 class="final-title">THANK YOU<br>FOR BEING<br>MY STORY</h2>
+
+      <div style="margin: 2rem auto;">
+        <svg viewBox="0 0 200 120" width="180" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 90 Q60 50 75 25 Q95 5 105 30 Q115 5 135 25 Q150 50 110 90 Q105 95 100 90 Z"
+                fill="#C8362E" stroke="#14110D" stroke-width="3"/>
+          <g stroke="#14110D" stroke-width="2" fill="none">
+            <path d="M40 30 L40 42 M34 36 L46 36"/>
+            <path d="M160 30 L160 42 M154 36 L166 36"/>
+            <path d="M50 90 L50 100 M45 95 L55 95"/>
+            <path d="M150 90 L150 100 M145 95 L155 95"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="final-text">
+        every chapter — the messy ones, the dumb ones, the ones we laughed through —<br>
+        <strong style="color: var(--red);">I'd choose you in all of them.</strong>
+      </div>
+
+      <div class="signature">— yours,<br>even at 3 AM ♡</div>
+
+      <div style="margin-top: 2rem; font-family: 'Bangers', cursive; font-size: 0.85rem; letter-spacing: 0.3em; color: var(--ink-soft);">
+        ☆ VOL. 2 LOADING... ☆
+      </div>
+
+      <button class="begin-btn" style="margin-top: 2rem;" onclick="goToPage(0)">↺ READ AGAIN</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- NAV -->
+<div class="nav hidden" id="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)">◀ PREV</button>
+  <div class="progress" id="progress"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">NEXT ▶</button>
+</div>
+
+<script>
+  // LOCK SCREEN
+  const SECRET = 'bhutkan';
+  const lockScreen = document.getElementById('lockScreen');
+  const lockInput = document.getElementById('lockInput');
+  const lockError = document.getElementById('lockError');
+  const bookEl = document.querySelector('.book');
+  const navEl = document.getElementById('nav');
+
+  // Hide book content initially
+  bookEl.style.display = 'none';
+
+  function tryUnlock() {
+    const val = lockInput.value.trim().toLowerCase();
+    if (val === SECRET.toLowerCase()) {
+      // Success!
+      lockScreen.classList.add('unlocked');
+      bookEl.style.display = 'block';
+      setTimeout(() => {
+        lockScreen.style.display = 'none';
+      }, 900);
+    } else if (val === '') {
+      lockError.textContent = 'type something... don\'t be shy ♡';
+      lockError.classList.remove('visible');
+      void lockError.offsetWidth;
+      lockError.classList.add('visible');
+    } else {
+      lockError.textContent = 'hmm, that\'s not it. try again? 💭';
+      lockError.classList.remove('visible');
+      void lockError.offsetWidth;
+      lockError.classList.add('visible');
+      lockInput.value = '';
+      lockInput.focus();
+    }
+  }
+
+  lockInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tryUnlock();
+  });
+</script>
+
+<script>
+  const totalPages = 14;
+  let currentPage = 0;
+  const progress = document.getElementById('progress');
+  for (let i = 1; i <= 12; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot';
+    dot.onclick = () => goToPage(i);
+    progress.appendChild(dot);
+  }
+  function updateProgress() {
+    const dots = progress.querySelectorAll('.progress-dot');
+    dots.forEach((dot, i) => {
+      const chapterNum = i + 1;
+      dot.classList.remove('active', 'visited');
+      if (chapterNum === currentPage) dot.classList.add('active');
+      else if (chapterNum < currentPage) dot.classList.add('visited');
+    });
+  }
+  function goToPage(n) {
+    if (n < 0 || n >= totalPages) return;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const next = document.querySelector(`[data-page="${n}"]`);
+    if (next) {
+      next.classList.add('active');
+      currentPage = n;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const nav = document.getElementById('nav');
+      if (n === 0) nav.classList.add('hidden');
+      else nav.classList.remove('hidden');
+      document.getElementById('prevBtn').disabled = (n <= 1);
+      document.getElementById('nextBtn').disabled = (n >= totalPages - 1);
+      updateProgress();
+    }
+  }
+  function changePage(delta) { goToPage(currentPage + delta); }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') changePage(1);
+    else if (e.key === 'ArrowLeft') changePage(-1);
+  });
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 50) { if (diff > 0) changePage(1); else changePage(-1); }
+  }, { passive: true });
+</script>
+
+</body>
+</html>
